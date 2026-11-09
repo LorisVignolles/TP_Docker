@@ -28,7 +28,9 @@ docker stop mon_nginx
 docker rm mon_nginx
 ```
 
-### 5 Exercice : Déploiement d'une application Python Flask
+### 5. Exercice : Déploiement d'une application Python Flask
+
+Création d'une application web minimale Flask (`app.py`), rédaction du fichier `Dockerfile` pour conteneuriser l'environnement Python, construction de l'image, puis exécution du conteneur avec redirection du port 5000 vers la machine hôte.
 
 ```bash
 docker build -t mon-app-flask .
@@ -38,4 +40,14 @@ docker stop conteneur-flask
 docker rm conteneur-flask
 ```
 
-### 6. Exercice : Utilisation de docker compose
+### 6. Exercice : Utilisation de Docker Compose
+
+Mise à jour de l'application Flask pour intégrer le driver MongoDB (`pymongo`), création du fichier `docker-compose.yml` définissant les deux services interconnectés (`web` et `mongodb`), persistance des données via un volume nommé, puis validation du déploiement et de la connexion à la base de données.
+
+```bash
+docker compose up -d --build
+docker compose ps
+curl http://localhost:5000
+docker compose logs
+docker compose down
+```
