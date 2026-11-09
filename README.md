@@ -30,5 +30,12 @@ docker rm mon_nginx
 
 ### 5 Exercice : Déploiement d'une application Python Flask
 
+```bash
+docker build -t mon-app-flask .
+docker run -d -p 5000:5000 --name conteneur-flask mon-app-flask
+docker ps
+docker stop conteneur-flask
+docker rm conteneur-flask
+```
 
 ### 6. Exercice : Utilisation de docker compose
