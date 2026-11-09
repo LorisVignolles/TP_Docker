@@ -4,7 +4,6 @@ import os
 
 app = Flask(__name__)
 
-# Le nom d'hôte 'mongodb' correspond au nom du service défini dans docker-compose.yml
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongodb:27017/")
 client = MongoClient(MONGO_URI)
 db = client["ma_base"]
@@ -12,7 +11,6 @@ db = client["ma_base"]
 @app.route('/')
 def index():
     try:
-        # Vérification active de la connexion avec une commande ping
         client.admin.command('ping')
         return jsonify({
             "status": "success",
