@@ -61,3 +61,5 @@ docker compose down
 | :--- | :--- | :--- |
 | État initial | 1.32GB | 120s |
 | Exclusion des fichiers locaux avec .dockerignore (node_modules notamment) | 1.31GB | 15s |
+| Séperation copy dependances/code source pour eviter le npm install à chaque lancement | 1.31GB | 14s |
+
