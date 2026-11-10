@@ -1,6 +1,8 @@
 # TP_Docker
+
 TP Docker Loris Vignolles
 
+## TP1 : Docker
 
 
 ### 3. Exercice : Manipulation de base des conteneurs
@@ -51,3 +53,11 @@ curl http://localhost:5000
 docker compose logs
 docker compose down
 ```
+
+## TP2 : Optimisation docker
+
+
+| Optimisation réalisée | Taille de l'image | Durée de build |
+| :--- | :--- | :--- |
+| État initial | 1.32GB | 120s |
+| Exclusion des fichiers locaux avec .dockerignore (node_modules notamment) | 1.31GB | 15s |
