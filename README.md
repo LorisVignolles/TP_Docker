@@ -1,6 +1,8 @@
 # TP_Docker
+
 TP Docker Loris Vignolles
 
+## TP1 : Docker
 
 
 ### 3. Exercice : Manipulation de base des conteneurs
@@ -51,3 +53,34 @@ curl http://localhost:5000
 docker compose logs
 docker compose down
 ```
+
+## TP2 : Optimisation docker
+
+### 1. Optimisations de l'image Docker (Dockerfile & Contexte)
+
+| Optimisation dockerfile réalisée | Taille de l'image | Durée de build |
+| :--- | :--- | :--- |
+| État initial | 1.32GB | 120s |
+| Exclusion des fichiers locaux avec .dockerignore (node_modules notamment) | 1.31GB | 15s |
+| Séperation copy dependances/code source pour eviter le npm install à chaque lancement, suppresion ports inutiles | 1.31GB | 14s |
+| Supprimer build-essential, locales inutiles, passage en mode production avec installation des dépendances nécessaires au runtime uniquement | 1.25GB | 4s |
+| Remplacement de l'image Debian par Alpine Linux et remplacement des privilèges root par un utilisateur dedié (node) | 145MB | 4.2s |
+
+### 2. Optimisations du code applicatif (`server.js`)
+
+* **Lecture de fichiers par flux (Streams) sur `/big` :**
+  * Remplacement de `fs.readFileSync` et `fs.existsSync` par `fs.createReadStream` et `fs.access`.
+  * Évite le blocage de l'Event Loop et empêche la saturation de la mémoire vive (RAM) lors de requêtes simultanées ou sur de volumineux fichiers.
+  * Délégation des sauts de ligne au rendu HTML/CSS (`white-space: pre-line`) pour éliminer la manipulation lourde de chaînes en mémoire par regex.
+
+* **Gestion de l'arrêt gracieux (*Graceful Shutdown*) :**
+  * Interception des signaux système `SIGTERM` et `SIGINT` envoyés par `docker stop`.
+  * Fermeture progressive du serveur HTTP via `server.close()` pour laisser le temps aux requêtes en cours de se terminer proprement avant l'arrêt du conteneur.
+
+* **Sécurisation des en-têtes et réduction des entrées/sorties (I/O) :**
+  * Désactivation du header d'empreinte logicielle `X-Powered-By: Express` (`app.disable('x-powered-by')`).
+  * Conditionnement du middleware de journalisation synchrone (`console.log`) hors production pour éliminer les goulots d'étranglement CPU/I/O en environnement conteneurisé.
+
+
+
+
