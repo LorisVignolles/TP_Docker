@@ -68,6 +68,7 @@ docker compose down
 
 
 - Utilisation de stream dans la lecture de fichier (route /big) pour éviter un blocage et saturation de la RAM : readFileSync lit de manière synchrone 
- 
+- Écouter les signaux système SIGTERM et SIGINT émis par docker stop pour fermer les connexions HTTP proprement sans interrompre brutalement les clients en cours de traitement. 
+
 
 

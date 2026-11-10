@@ -39,6 +39,18 @@ app.get('/big', (req, res) => {
 
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-console.log(`Serveur démarré sur le port ${PORT}`);
+
+const server = app.listen(PORT, () => {
+  console.log(`Serveur démarré sur le port ${PORT}`);
 });
+
+const shutdown = (signal) => {
+  console.log(`Signal ${signal} reçu, arrêt progressif du serveur...`);
+  server.close(() => {
+    console.log('Connexions fermées, conteneur arrêté proprement.');
+    process.exit(0);
+  });
+};
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
