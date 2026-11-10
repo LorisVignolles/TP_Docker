@@ -18,14 +18,23 @@ res.send('Hello world — serveur volontairement non optimisé mais fonctionnel'
 });
 
 
+
 app.get('/big', (req, res) => {
-const filePath = path.join(__dirname, 'maybe-big-file.txt');
-if (fs.existsSync(filePath)) {
-const data = fs.readFileSync(filePath, 'utf8');
-res.send(data.replace(/\n/g, '<br/>'));
-} else {
-res.send('Fichier introuvable');
-}
+  const filePath = path.join(__dirname, 'maybe-big-file.txt');
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).send('Fichier introuvable');
+    }
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.write('<div style="white-space: pre-line;">');
+
+    const stream = fs.createReadStream(filePath, { encoding: 'utf8' });
+    stream.on('data', chunk => res.write(chunk));
+    stream.on('end', () => res.end('</div>'));
+    stream.on('error', () => res.status(500).end('Erreur lecture'));
+  });
 });
 
 

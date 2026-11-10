@@ -57,12 +57,17 @@ docker compose down
 ## TP2 : Optimisation docker
 
 
-| Optimisation réalisée | Taille de l'image | Durée de build |
+| Optimisation dockerfile réalisée | Taille de l'image | Durée de build |
 | :--- | :--- | :--- |
 | État initial | 1.32GB | 120s |
 | Exclusion des fichiers locaux avec .dockerignore (node_modules notamment) | 1.31GB | 15s |
 | Séperation copy dependances/code source pour eviter le npm install à chaque lancement, suppresion ports inutiles | 1.31GB | 14s |
 | Supprimer build-essential, locales inutiles, passage en mode production avec installation des dépendances nécessaires au runtime uniquement | 1.25GB | 4s |
 | Remplacement de l'image Debian par Alpine Linux et remplacement des privilèges root par un utilisateur dedié (node) | 145MB | 4.2s |
+
+
+
+- Utilisation de stream dans la lecture de fichier (route /big) pour éviter un blocage et saturation de la RAM : readFileSync lit de manière synchrone 
+ 
 
 

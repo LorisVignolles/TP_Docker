@@ -8,7 +8,6 @@ RUN npm ci --only=production && npm cache clean --force
 
 COPY . .
 
-# Sécurisation : utilisation de l'utilisateur non-privilégié fourni par Alpine
 USER node
 
 EXPOSE 3000
