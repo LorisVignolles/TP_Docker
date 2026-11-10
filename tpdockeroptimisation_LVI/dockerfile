@@ -1,11 +1,15 @@
-FROM node:latest
+FROM node:20-alpine
 WORKDIR /app
+
+ENV NODE_ENV=production
+
 COPY package*.json ./
-RUN npm install
+RUN npm ci --only=production && npm cache clean --force
+
 COPY . .
-RUN apt-get update && apt-get install -y build-essential ca-certificates locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
+
+# Sécurisation : utilisation de l'utilisateur non-privilégié fourni par Alpine
+USER node
+
 EXPOSE 3000
-ENV NODE_ENV=development
-RUN npm run build
-USER root
 CMD ["node", "server.js"]
