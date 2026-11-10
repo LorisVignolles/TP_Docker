@@ -6,15 +6,19 @@ const path = require('path');
 const app = express();
 
 
-// Middleware verbeux et un peu inutile
-app.use((req, res, next) => {
-console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-next();
-});
+app.disable('x-powered-by');
+
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+  });
+}
 
 
 app.get('/', (req, res) => {
-res.send('Hello world — serveur volontairement non optimisé mais fonctionnel');
+  res.send('Hello world — serveur optimisé');
 });
 
 
